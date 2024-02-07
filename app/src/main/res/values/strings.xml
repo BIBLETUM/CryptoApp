@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CryptoApp</string>
+    <string name="date_of_last_update">Время последнего обновления: %s</string>
+    <string name="symbs_template">%s / %s</string>
 </resources>

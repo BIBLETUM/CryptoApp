@@ -3,6 +3,7 @@ package com.example.cryptoapp
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.example.cryptoapp.api.ApiFactory
 import com.example.cryptoapp.database.AppDataBase
 import com.example.cryptoapp.pojo.CoinPriceInfo
@@ -10,6 +11,7 @@ import com.example.cryptoapp.pojo.CoinPriceInfoRawData
 import com.google.gson.Gson
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class CoinViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -17,25 +19,34 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
     private val compositeDisposable = CompositeDisposable()
     val priceLis = db.coinPriceInfoDao().getPriceList()
 
-    fun loadData() {
+    init {
+        loadData()
+    }
+
+    fun getDetailInfo(fSym: String): LiveData<CoinPriceInfo> {
+        return db.coinPriceInfoDao().getPriceInfoAboutCoin(fSym)
+    }
+
+    private fun loadData() {
         val disposable = ApiFactory.apiService.getTopCoinsInfo()
             .map { it.data?.map { it.coinInfo?.name }?.joinToString(",").toString() }
             .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
             .map { getPriceListFromRawData(it) }
+            .delaySubscription(5, TimeUnit.SECONDS)
+            .repeat()
+            .retry()
             .subscribeOn(Schedulers.io())
             .subscribe({
                 db.coinPriceInfoDao().insertPriceList(it)
-                Log.d("aboba", it.toString())
             }, {
-                Log.d("Aboba", it.message.toString())
+                Log.d("Error", it.message.toString())
             })
         compositeDisposable.add(disposable)
     }
 
     private fun getPriceListFromRawData(coinPriceInfoRawData: CoinPriceInfoRawData): List<CoinPriceInfo> {
         val result = ArrayList<CoinPriceInfo>()
-        val jsonObject = coinPriceInfoRawData.coinPriceInfoJsonObject
-        if (jsonObject == null) return result
+        val jsonObject = coinPriceInfoRawData.coinPriceInfoJsonObject ?: return result
         val coinKeySet = jsonObject.keySet()
         for (key in coinKeySet) {
             val currencyJson = jsonObject.getAsJsonObject(key)
