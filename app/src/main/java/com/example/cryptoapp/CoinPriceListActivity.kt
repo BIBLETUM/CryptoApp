@@ -1,6 +1,5 @@
 package com.example.cryptoapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -23,8 +22,10 @@ class CoinPriceListActivity : AppCompatActivity() {
         recyclerView.adapter = coinInfoAdapter
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
-                val intent = Intent(this@CoinPriceListActivity, CoinDetailActivity::class.java)
-                intent.putExtra(CoinDetailActivity.FROM_SYMBOL_EXTRA, coinPriceInfo.fromSymbol)
+                val intent = CoinDetailActivity.newIntent(
+                    this@CoinPriceListActivity,
+                    coinPriceInfo.fromSymbol
+                )
                 startActivity(intent)
             }
         }
