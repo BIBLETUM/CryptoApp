@@ -1,9 +1,9 @@
-package com.example.cryptoapp.pojo
+package com.example.cryptoapp.data.pojo
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.cryptoapp.api.ApiFactory
-import com.example.cryptoapp.utils.convertTimeStampToString
+import com.example.cryptoapp.data.api.ApiFactory
+import com.example.cryptoapp.data.utils.convertTimeStampToString
 import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
