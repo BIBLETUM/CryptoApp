@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptoapp.data.pojo.CoinPriceInfo
+import com.example.cryptoapp.data.network.ApiFactory
+import com.example.cryptoapp.data.utils.convertTimeStampToString
 import com.example.cryptoapp.databinding.FragmentCoinDetailBinding
+import com.example.cryptoapp.domain.CoinInfo
 import com.squareup.picasso.Picasso
 
 class CoinDetailFragment : Fragment() {
@@ -36,25 +38,23 @@ class CoinDetailFragment : Fragment() {
             throw RuntimeException("Param from symbol is absent")
         }
 
-        val fromSymbol = args.getString(FROM_SYMBOL)
+        val fromSymbol = args.getString(FROM_SYMBOL) ?: EMPTY_FROM_SYMBOL
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-        fromSymbol?.let {
-            viewModel.getDetailInfo(fromSymbol).observe(viewLifecycleOwner) {
-                setData(it)
-            }
+        viewModel.getDetailInfo(fromSymbol).observe(viewLifecycleOwner) {
+            setData(it)
         }
     }
 
-    private fun setData(coinPriceInfo: CoinPriceInfo) {
+    private fun setData(coinInfo: CoinInfo) {
         with(binding) {
-            Picasso.get().load(coinPriceInfo.getFormattedImageUrl()).into(imageViewCoin)
-            textViewFromSymbol.text = coinPriceInfo.fromSymbol
-            textViewToSymbol.text = coinPriceInfo.toSymbol
-            tvPrice.text = coinPriceInfo.price.toString()
-            tvMinPrice.text = coinPriceInfo.lowDay.toString()
-            tvMaxPrice.text = coinPriceInfo.highDay.toString()
-            tvLastMarket.text = coinPriceInfo.lastMarket
-            tvLastUpdate.text = coinPriceInfo.getFormattedTime()
+            Picasso.get().load(ApiFactory.BASE_IMAGE_URL + coinInfo.imageUrl).into(imageViewCoin)
+            textViewFromSymbol.text = coinInfo.fromSymbol
+            textViewToSymbol.text = coinInfo.toSymbol
+            tvPrice.text = coinInfo.price.toString()
+            tvMinPrice.text = coinInfo.lowDay.toString()
+            tvMaxPrice.text = coinInfo.highDay.toString()
+            tvLastMarket.text = coinInfo.lastMarket
+            tvLastUpdate.text = convertTimeStampToString(coinInfo.lastUpdate)
         }
     }
 
@@ -65,6 +65,7 @@ class CoinDetailFragment : Fragment() {
 
     companion object {
         private const val FROM_SYMBOL = "fromSymbol"
+        private const val EMPTY_FROM_SYMBOL = ""
 
         fun newInstance(fromSymbol: String): CoinDetailFragment {
             return CoinDetailFragment().apply {

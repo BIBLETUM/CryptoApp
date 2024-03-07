@@ -1,9 +1,8 @@
-package com.example.cryptoapp.data.api
+package com.example.cryptoapp.data.network
 
 import com.example.cryptoapp.BuildConfig
-import com.example.cryptoapp.data.pojo.CoinInfoListOfData
-import com.example.cryptoapp.data.pojo.CoinPriceInfoRawData
-import io.reactivex.rxjava3.core.Single
+import com.example.cryptoapp.data.network.model.CoinInfoJsonContainerDto
+import com.example.cryptoapp.data.network.model.CoinNamesListDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,16 +17,16 @@ interface ApiService {
     }
 
     @GET("top/totalvolfull")
-    fun getTopCoinsInfo(
+    suspend fun getTopCoinsInfo(
         @Query(QUERY_API_KEY) apiKey: String = BuildConfig.API_KEY,
         @Query(QUERY_PARAM_LIMIT) limit: Int = 10,
         @Query(QUERY_TO_SYMBOL) tSym: String = "USD"
-    ): Single<CoinInfoListOfData>
+    ): CoinNamesListDto
 
     @GET("pricemultifull")
-    fun getFullPriceList(
+    suspend fun getFullPriceList(
         @Query(QUERY_API_KEY) apiKey: String = BuildConfig.API_KEY,
         @Query(QUERY_FROM_SYMBOLS) fSyms: String,
         @Query(QUERY_TO_SYMBOLS) tSyms: String = "USD"
-    ): Single<CoinPriceInfoRawData>
+    ): CoinInfoJsonContainerDto
 }

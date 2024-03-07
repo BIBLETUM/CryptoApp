@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.pojo.CoinPriceInfo
+import com.example.cryptoapp.data.network.ApiFactory
+import com.example.cryptoapp.data.utils.convertTimeStampToString
 import com.example.cryptoapp.databinding.ItemCoinInfoBinding
+import com.example.cryptoapp.domain.CoinInfo
 import com.example.cryptoapp.presentation.CoinPriceItemDiffCallBack
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context) :
-    ListAdapter<CoinPriceInfo, CoinInfoViewHolder>(CoinPriceItemDiffCallBack()) {
+    ListAdapter<CoinInfo, CoinInfoViewHolder>(CoinPriceItemDiffCallBack()) {
 
     var onCoinClickListener: OnCoinClickListener? = null
 
@@ -33,8 +35,9 @@ class CoinInfoAdapter(private val context: Context) :
             val lastUpdateTemplate = context.resources.getString(R.string.date_of_last_update)
             tvSymbols.text = symbsTemplate.format(coinInfo.fromSymbol, coinInfo.toSymbol)
             tvPrice.text = coinInfo.price.toString()
-            tvTimeUpdated.text = lastUpdateTemplate.format(coinInfo.getFormattedTime())
-            Picasso.get().load(coinInfo.getFormattedImageUrl()).into(imageViewCoin)
+            tvTimeUpdated.text =
+                lastUpdateTemplate.format(convertTimeStampToString(coinInfo.lastUpdate))
+            Picasso.get().load(ApiFactory.BASE_IMAGE_URL + coinInfo.imageUrl).into(imageViewCoin)
 
             root.setOnClickListener {
                 onCoinClickListener?.onCoinClick(coinInfo)
@@ -43,7 +46,7 @@ class CoinInfoAdapter(private val context: Context) :
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coinPriceInfo: CoinPriceInfo)
+        fun onCoinClick(coinInfoDto: CoinInfo)
     }
 
     companion object {

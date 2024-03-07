@@ -1,15 +1,16 @@
 package com.example.cryptoapp.presentation
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.cryptoapp.data.pojo.CoinPriceInfo
+import com.example.cryptoapp.data.network.model.CoinInfoDto
+import com.example.cryptoapp.domain.CoinInfo
 
-class CoinPriceItemDiffCallBack: DiffUtil.ItemCallback<CoinPriceInfo>() {
+class CoinPriceItemDiffCallBack: DiffUtil.ItemCallback<CoinInfo>() {
 
-    override fun areItemsTheSame(oldItem: CoinPriceInfo, newItem: CoinPriceInfo): Boolean {
+    override fun areItemsTheSame(oldItem: CoinInfo, newItem: CoinInfo): Boolean {
         return oldItem.fromSymbol == newItem.fromSymbol
     }
 
-    override fun areContentsTheSame(oldItem: CoinPriceInfo, newItem: CoinPriceInfo): Boolean {
+    override fun areContentsTheSame(oldItem: CoinInfo, newItem: CoinInfo): Boolean {
         return oldItem == newItem
     }
 
