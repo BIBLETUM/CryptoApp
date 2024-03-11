@@ -19,8 +19,8 @@ class CoinRepositoryImpl(
     private val mapper = CoinMapper()
 
     override fun getCoinInfoList(): LiveData<List<CoinInfo>> {
-        return coinInfoDao.getPriceList().map {
-            it.map { mapper.mapDbModelToEntity(it) }
+        return coinInfoDao.getPriceList().map { list ->
+            list.map { mapper.mapDbModelToEntity(it) }
         }
     }
 

@@ -2,14 +2,11 @@ package com.example.cryptoapp.data.network.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.cryptoapp.data.network.ApiFactory
-import com.example.cryptoapp.data.utils.convertTimeStampToString
 import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "full_price_list")
-data class CoinInfoDto (
+data class CoinInfoDto(
     @SerializedName("TYPE")
     @Expose
     val type: String?,
@@ -202,12 +199,5 @@ data class CoinInfoDto (
     @SerializedName("IMAGEURL")
     @Expose
     val imageUrl: String?
-){
-    fun getFormattedTime(): String {
-        return convertTimeStampToString(lastUpdate)
-    }
-    fun getFormattedImageUrl(): String {
-        return ApiFactory.BASE_IMAGE_URL + imageUrl
-    }
-}
+)
 

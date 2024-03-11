@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.network.ApiFactory
-import com.example.cryptoapp.data.utils.convertTimeStampToString
 import com.example.cryptoapp.databinding.ItemCoinInfoBinding
 import com.example.cryptoapp.domain.CoinInfo
 import com.example.cryptoapp.presentation.CoinPriceItemDiffCallBack
@@ -36,8 +34,8 @@ class CoinInfoAdapter(private val context: Context) :
             tvSymbols.text = symbsTemplate.format(coinInfo.fromSymbol, coinInfo.toSymbol)
             tvPrice.text = coinInfo.price.toString()
             tvTimeUpdated.text =
-                lastUpdateTemplate.format(convertTimeStampToString(coinInfo.lastUpdate))
-            Picasso.get().load(ApiFactory.BASE_IMAGE_URL + coinInfo.imageUrl).into(imageViewCoin)
+                lastUpdateTemplate.format(coinInfo.lastUpdate)
+            Picasso.get().load(coinInfo.imageUrl).into(imageViewCoin)
 
             root.setOnClickListener {
                 onCoinClickListener?.onCoinClick(coinInfo)
@@ -47,9 +45,5 @@ class CoinInfoAdapter(private val context: Context) :
 
     interface OnCoinClickListener {
         fun onCoinClick(coinInfoDto: CoinInfo)
-    }
-
-    companion object {
-        const val POOL_MAX_SIZE = 15
     }
 }

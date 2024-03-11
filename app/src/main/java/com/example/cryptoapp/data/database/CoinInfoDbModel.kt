@@ -2,14 +2,9 @@ package com.example.cryptoapp.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.cryptoapp.data.network.ApiFactory
-import com.example.cryptoapp.data.utils.convertTimeStampToString
-import com.google.gson.annotations.Expose
-
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "full_price_list")
-data class CoinInfoDbModel (
+data class CoinInfoDbModel(
     @PrimaryKey
     val fromSymbol: String,
     val toSymbol: String?,
@@ -18,6 +13,6 @@ data class CoinInfoDbModel (
     val lastUpdate: Long?,
     val highDay: Double?,
     val lowDay: Double?,
-    val imageUrl: String?
+    val imageUrl: String
 )
 

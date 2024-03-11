@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptoapp.data.network.ApiFactory
-import com.example.cryptoapp.data.utils.convertTimeStampToString
 import com.example.cryptoapp.databinding.FragmentCoinDetailBinding
 import com.example.cryptoapp.domain.CoinInfo
 import com.squareup.picasso.Picasso
@@ -47,14 +45,14 @@ class CoinDetailFragment : Fragment() {
 
     private fun setData(coinInfo: CoinInfo) {
         with(binding) {
-            Picasso.get().load(ApiFactory.BASE_IMAGE_URL + coinInfo.imageUrl).into(imageViewCoin)
+            Picasso.get().load(coinInfo.imageUrl).into(imageViewCoin)
             textViewFromSymbol.text = coinInfo.fromSymbol
             textViewToSymbol.text = coinInfo.toSymbol
-            tvPrice.text = coinInfo.price.toString()
-            tvMinPrice.text = coinInfo.lowDay.toString()
-            tvMaxPrice.text = coinInfo.highDay.toString()
+            tvPrice.text = coinInfo.price
+            tvMinPrice.text = coinInfo.lowDay
+            tvMaxPrice.text = coinInfo.highDay
             tvLastMarket.text = coinInfo.lastMarket
-            tvLastUpdate.text = convertTimeStampToString(coinInfo.lastUpdate)
+            tvLastUpdate.text = coinInfo.lastUpdate
         }
     }
 
