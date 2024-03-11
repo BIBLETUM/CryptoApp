@@ -21,6 +21,7 @@ class CoinPriceListActivity : AppCompatActivity() {
 
         val coinInfoAdapter = CoinInfoAdapter(this)
         binding.recyclerViewCoinPriceList.adapter = coinInfoAdapter
+        binding.recyclerViewCoinPriceList.itemAnimator = null
 
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinInfoDto: CoinInfo) {

@@ -11,7 +11,7 @@ import com.example.cryptoapp.presentation.CoinPriceItemDiffCallBack
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context) :
-    ListAdapter<CoinInfo, CoinInfoViewHolder>(CoinPriceItemDiffCallBack()) {
+    ListAdapter<CoinInfo, CoinInfoViewHolder>(CoinPriceItemDiffCallBack) {
 
     var onCoinClickListener: OnCoinClickListener? = null
 
@@ -26,7 +26,7 @@ class CoinInfoAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: CoinInfoViewHolder, position: Int) {
         val coinInfo = getItem(position)
-        val binding = holder.binding as ItemCoinInfoBinding
+        val binding = holder.binding
 
         with(binding) {
             val symbsTemplate = context.resources.getString(R.string.symbs_template)

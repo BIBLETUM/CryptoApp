@@ -1,6 +1,6 @@
 package com.example.cryptoapp.presentation.adapters
 
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
+import com.example.cryptoapp.databinding.ItemCoinInfoBinding
 
-class CoinInfoViewHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
+class CoinInfoViewHolder(val binding: ItemCoinInfoBinding) : RecyclerView.ViewHolder(binding.root)
